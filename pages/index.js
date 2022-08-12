@@ -19,7 +19,7 @@ export default function Home({products}) {
   const {cart} = state;
     // const product = data.products.find((x) => x._id === _id)
     const addtocartHandler = async () =>{
-      const existItem = state.cart.cartItem.find((x) => x._id === products._id);
+      const existItem = cart.cartItem.find((x) => x._id === products._id);
       const quantity = existItem ? existItem.quantity + 1 : 1;
 
       const { data } = await axios.get(`/api/${products._id}`);
@@ -36,7 +36,7 @@ export default function Home({products}) {
  
 
   return (
-    <Layout title="home page" >
+    <Layout title="home page"  classsName="sticky absolute top-0">
 
 
 

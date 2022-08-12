@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {Button} from '@material-tailwind/react'
 import axios from 'axios';
+import { toast } from 'react-toastify';
 function ProductScreen(props) {
     const {product} = props;
 
@@ -23,11 +24,13 @@ function ProductScreen(props) {
         const existItem = state.cart.cartItem.find((x) => x._id === product._id);
         const quantity = existItem ? existItem.quantity + 1 : 1;
 
-        const { data } = await axios.get(`/api/${product._id}`);
+        const  {data}  = await axios.get(`/api/${product._id}`);
+        
+        {console.log("data",data)}
 
         if (data.countInStock < quantity) {
           return toast.error('Sorry. Product is out of stock');
-        }
+        }   
 
         dispatch({type:'CART_ADD_ITEM', payload:{...product, quantity}})
         
@@ -63,6 +66,7 @@ function ProductScreen(props) {
             <div className='font-'>Price  :   <span className=''>{dollarUS.format(product.price)}</span> </div>
             <div>Rating : {product.rating ? product.rating : "Not Found"}</div>
             <div className=''>Review: {product.numReviews}</div>
+            <div>Availability: {product.countInStock}</div>
             <Button className="font-Poppins font-normal" onClick={addtocartHandler}>Add to cart</Button>
         </div>
     </div>
