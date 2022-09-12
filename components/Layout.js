@@ -1,25 +1,34 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {HiOutlineShoppingCart} from 'react-icons/hi'
+
 import Head from 'next/head'
 import { AppWrapper } from '../utils/context'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
 import Link from 'next/link';
+
+
+import dynamic from 'next/dynamic'
+
+const DynamicHeader = dynamic(() => import('../components/Header'), {
+  ssr: false,
+})
+
+
 export default function Layout({children, title}) {
 
   
   const{state, dispatch} = useContext(AppWrapper);
   const {cart}  = state;
-  console.log(cart)
+  // {console.log(cart)}
 
   const [cartItemsCount, setCartItemsCount] = useState(0)
 
 
   useEffect(() => {
   
-    setCartItemsCount(cart.cartItem.reduce((a,c) =>{
-      
-     return  a + c.quantity }, 0) )
+    // setCartItemsCount(cart.cartItem.reduce((a,c) => a + c.quantity }, 0) )
+    setCartItemsCount(cart.cartItem.reduce((a,c) => a + c.quantity , 0));
     
   }, [cart.cartItem])
   
@@ -37,15 +46,15 @@ export default function Layout({children, title}) {
       <ToastContainer position='bottom-center' limit={1} />
 
 
-
-
-      <div>
+      <DynamicHeader />
+      {/* <Header/> */}
+      {/* <div>
           <header>
           <nav className='text-xl p-6 h-16 sticky border shadow-inner flex items-center justify-between '>
             <Link href="/">
-            <div className='cursor-pointer'>
+            <a className='cursor-pointer'>
               Company 
-            </div>
+            </a>
             </Link>
             
         
@@ -54,17 +63,31 @@ export default function Layout({children, title}) {
             <div className=" flex items-center  w-20 justify-between">
               
             <div className='relative '>
-            <HiOutlineShoppingCart className='text-3xl  font-light text-[#070932]  cursor-pointer'>
+     
         
-            </HiOutlineShoppingCart>
         
-            {cartItemsCount > 0 && (
-              <span className='ml-1 absolute text-xs top-0 right-[-4px] rounded-full bg-blue-gray-100 px-1 font-medium '>
-                {cartItemsCount}
-               
-              </span>
-            )}
-             {console.log(cartItemsCount)}
+{/* 
+          
+              {cart.cartItem.length > 0 && (
+                <span className='ml-1 absolute text-xs top-0 right-[-4px] rounded-full bg-blue-gray-100 px-1 font-medium '>
+                  {cart.cartItem.reduce((a,c) => a + c.quantity, 0)}
+                
+                </span>
+              )} */}
+ 
+                {/* <div>
+                <HiOutlineShoppingCart className="text-3xl"/>
+                </div> */}
+
+  {/* {cart.cartItem.length  > 0 && (
+    <span className='ml-1 absolute text-xs top-0 right-[-4px] rounded-full bg-blue-gray-100 px-1 font-medium'>
+      {cartItemsCount}
+    </span>
+  )} */}
+
+
+
+{/*              
             </div>
             
         </div>
@@ -74,7 +97,8 @@ export default function Layout({children, title}) {
           </nav>
           </header>
 
-      </div>
+      </div> */}
+
 
 
         <main>{children}</main>

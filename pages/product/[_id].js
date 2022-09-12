@@ -8,9 +8,11 @@ import Link from 'next/link'
 import {Button} from '@material-tailwind/react'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+// import handler from './[tokenId]'
 function ProductScreen(props) {
     const {product} = props;
 
+    console.log("product",product)
 
     const {state, dispatch} = useContext(AppWrapper)
 
@@ -26,7 +28,7 @@ function ProductScreen(props) {
 
         const  {data}  = await axios.get(`/api/${product._id}`);
         
-        {console.log("data",data)}
+        {console.log("data file : [_id{",data)}
 
         if (data.countInStock < quantity) {
           return toast.error('Sorry. Product is out of stock');
@@ -40,7 +42,7 @@ function ProductScreen(props) {
   return (
    <Layout title={product.title} >
     <div className='grid grid-cols-2   gap-3 px-9'>
-       <div className=' border-black'>
+       <div className='mt-20 border-black'>
          <div className='border rounded border-blue-gray-600 w-fit px-4'>
             <Link href="/">
             back to home page 
@@ -49,8 +51,9 @@ function ProductScreen(props) {
          <Image src={product.img}
          alt={product.title}
          width={640} 
-         height={640}
-         className="object-contain "
+         height={540}
+         className="border border-red-500  object-contain  "
+         quality={100}
         
          >
          </Image>
@@ -94,3 +97,5 @@ export async function getServerSideProps(context) {
         }
     }
 }
+
+// 

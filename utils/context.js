@@ -1,9 +1,11 @@
+import Cookies from 'js-cookie';
 import React, { createContext,  useReducer } from 'react'
 
  export  const AppWrapper = createContext();
 
   const initialState = {
-    cart: {cartItem: []},
+    cart: Cookies.get('cart') ? JSON.parse(Cookies.get('cart')) : { cartItem : []}
+    // cart:{cartItem:[]}
 
   }
 
@@ -30,10 +32,21 @@ import React, { createContext,  useReducer } from 'react'
 
         // return the state with the change in the cart which is all the state and the updated cart 
         // or you can say add the new cartItem in the cart 
+
+        Cookies.set('cart', JSON.stringify({...state.cart, cartItem}))
         return {  ...state, cart:{ ...state.cart, cartItem} }
 
 
         
+
+      }
+
+      case 'CART_REMOVE_ITEM' : {
+        const cartItem = state.cart.cartItem.filter(
+          (item) => item._id !== action.payload._id
+        );
+        Cookies.set('cart', JSON.stringify({...state.cart, cartItem}))
+        return {...state, cart:{...state.cart , cartItem}}
 
       }
 
