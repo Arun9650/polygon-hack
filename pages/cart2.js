@@ -13,7 +13,9 @@ import {Signer} from 'ethers'
 import { ToastContainer, toast } from 'react-toastify'
 import {ethers} from 'ethers'
 import dynamic from 'next/dynamic'
-require("dotenv").config({ path: ".env" });
+
+
+
 let dollarUS = Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
