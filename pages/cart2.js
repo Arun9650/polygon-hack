@@ -13,6 +13,7 @@ import {Signer} from 'ethers'
 import { ToastContainer, toast } from 'react-toastify'
 import {ethers} from 'ethers'
 import dynamic from 'next/dynamic'
+require("dotenv").config({ path: ".env" });
 let dollarUS = Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -22,9 +23,9 @@ let dollarUS = Intl.NumberFormat("en-US", {
 import { WHITELIST_CONTRACT_ADDRESS, abi } from '../constans/index'
 import { useContract, useSigner } from 'wagmi'
 
+const api = process.env.api_key;
 
-
-const api = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU0ZkMxMTU0NzY3MzBCQTEyODBEYUFFRjNBODcxZGFGYzc0ZTdBQjkiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MzE0NDMyODEzNSwibmFtZSI6InBvbHlnb24tbmZ0In0.aqieFyTXDvAAbdNGBdwVu3ePNBkW3bvUCeUrw_uslXI"
+// const api = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU0ZkMxMTU0NzY3MzBCQTEyODBEYUFFRjNBODcxZGFGYzc0ZTdBQjkiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MzE0NDMyODEzNSwibmFtZSI6InBvbHlnb24tbmZ0In0.aqieFyTXDvAAbdNGBdwVu3ePNBkW3bvUCeUrw_uslXI"
 function CartScreen() {
 
     const baseurl = "https://ipfs.io/ipfs/";
