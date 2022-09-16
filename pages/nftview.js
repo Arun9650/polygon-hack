@@ -4,15 +4,14 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import Layout from '../components/Layout'
 import { WHITELIST_CONTRACT_ADDRESS, abi } from '../constans/index'
-import { useContract, useSigner } from 'wagmi'
+import {  useSigner } from 'wagmi'
 
-import { NFTStorage } from 'nft.storage'
 import { useAccount } from 'wagmi'
-import { Contract, Wallet } from 'ethers'
+import { Contract } from 'ethers'
 import { AppWrapper } from '../utils/context'
 import Image from 'next/image'
-import Link from 'next/link'
-import { Button, Card, CardFooter } from '@material-tailwind/react'
+
+import { Card, CardFooter } from '@material-tailwind/react'
 
 
 const api = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU0ZkMxMTU0NzY3MzBCQTEyODBEYUFFRjNBODcxZGFGYzc0ZTdBQjkiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MzE0NDMyODEzNSwibmFtZSI6InBvbHlnb24tbmZ0In0.aqieFyTXDvAAbdNGBdwVu3ePNBkW3bvUCeUrw_uslXI"

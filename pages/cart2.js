@@ -8,22 +8,17 @@ import { AppWrapper } from '../utils/context'
 import { HiXCircle } from 'react-icons/hi'
 import { NFTStorage } from 'nft.storage'
 import { useAccount } from 'wagmi'
-import {Contract, Wallet} from 'ethers'
-import {Signer} from 'ethers'
-import { ToastContainer, toast } from 'react-toastify'
+import {Contract} from 'ethers'
+
+import { toast } from 'react-toastify'
 import {ethers} from 'ethers'
 import dynamic from 'next/dynamic'
 
 
 
-let dollarUS = Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-});
-
 
 import { WHITELIST_CONTRACT_ADDRESS, abi } from '../constans/index'
-import { useContract, useSigner } from 'wagmi'
+import {  useSigner } from 'wagmi'
 
 const api = process.env.api_key;
 
@@ -31,13 +26,13 @@ const api = process.env.api_key;
 function CartScreen() {
 
     const baseurl = "https://ipfs.io/ipfs/";
-    const { address, isConnecting, isDisconnected } = useAccount()
+   
     const [price, setPrice] = useState(0);
     const [amount, setAmount] = useState(0);
 
     const cartItemPrice = JSON.stringify( amount / price);
 
-    const { data: signer, isError, isLoading } = useSigner()
+    const { data: signer} = useSigner()
 
 
     const { state, dispatch } = useContext(AppWrapper)
