@@ -48,7 +48,8 @@ function ProductScreen(props) {
             back to home page 
             </Link>
          </div>
-         <Image src={product.img}
+       
+         <Image src={product.image}
          alt={product.title}
          width={640} 
          height={540}

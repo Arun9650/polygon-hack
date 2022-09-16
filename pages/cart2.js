@@ -6,16 +6,13 @@ import Layout from '../components/Layout'
 import { Card, CardBody, Button } from '@material-tailwind/react'
 import { AppWrapper } from '../utils/context'
 import { HiXCircle } from 'react-icons/hi'
+import { NFTStorage } from 'nft.storage'
+import { useAccount } from 'wagmi'
+import {Contract, Wallet} from 'ethers'
+import {Signer} from 'ethers'
+import { ToastContainer, toast } from 'react-toastify'
+import {ethers} from 'ethers'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import { BigNumber } from 'ethers'
-import { Buffer } from 'buffer';
-import { useSendTransaction, usePrepareSendTransaction } from 'wagmi'
-import { create } from "ipfs-http-client";
-import { Web3Storage,getFilesFromPath ,File } from 'web3.storage'
-
 let dollarUS = Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -25,54 +22,19 @@ let dollarUS = Intl.NumberFormat("en-US", {
 import { WHITELIST_CONTRACT_ADDRESS, abi } from '../constans/index'
 import { useContract, useSigner } from 'wagmi'
 
-// const ipfsClient = create("https://ipfs.infura.io:5001/api/v0");
-
-// const projectId = '1d487b7f777448148e786c60be3a2f96';   // <---------- your Infura Project ID
-
-// const projectSecret = '5b461e708cbb4613bcd3b6cc2c47db3a';  // <---------- your Infura Secret
-// // (for security concerns, consider saving these values in .env 912c3bcc4d03026fb53decf499b80ec0files)
-
-// const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
-
-// const ipfsClient = create({
-//     host: 'ipfs.infura.io',
-//     port: 5001,
-//     protocol: 'https',
-//     headers: {
-//         authorization: auth,
-//     },
-// });
-
-// const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
 
 
-
-
-
-// store.mjs
-
-
-
-const token = process.env.WEB3STORAGE_TOKEN
-const client = new Web3Storage({ token })
-
-
-
-
-
-
+const api = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDU0ZkMxMTU0NzY3MzBCQTEyODBEYUFFRjNBODcxZGFGYzc0ZTdBQjkiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MzE0NDMyODEzNSwibmFtZSI6InBvbHlnb24tbmZ0In0.aqieFyTXDvAAbdNGBdwVu3ePNBkW3bvUCeUrw_uslXI"
 function CartScreen() {
 
-   
+    const baseurl = "https://ipfs.io/ipfs/";
+    const { address, isConnecting, isDisconnected } = useAccount()
     const [price, setPrice] = useState(0);
     const [amount, setAmount] = useState(0);
 
-    const cartItemPrice = amount / price;
+    const cartItemPrice = JSON.stringify( amount / price);
 
-    const description = "this is just for testing ";
-
-
-    // const ipfsBaseUrl = "https://ipfs.infura.io/ipfs/";
+    const { data: signer, isError, isLoading } = useSigner()
 
 
     const { state, dispatch } = useContext(AppWrapper)
@@ -82,66 +44,110 @@ function CartScreen() {
 
 
 
+   
 
+
+
+   async function Mint(url) {
 
     
+        try {
+
+           const nftContract = new Contract(WHITELIST_CONTRACT_ADDRESS, abi, signer);
+
+           const tx =  await nftContract.mint(url,{value: ethers.utils.parseEther(cartItemPrice)});
+           toast.info('Your NFT is Minting...');
+          
+            console.log("Your nft is minting...")
+            await tx.wait();
+
+            console.log(tx);    
+            toast.success("congratulations ,Your NFT Is Minted ")
 
 
-// async function getFiles (path) {
-//     const files = await getFilesFromPath(path)
-//     console.log(`read ${files.length} file(s) from ${path}`)
-//     return files
-//   }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    console.log("cartItem",cartItem)
+    const storeNFT = async () => {
+        // const name = cartItem.map((item) => item.name)
+        
+        const discription  = cartItem[0].discription ? cartItem[0].discription : "something new  is  discription";
+        console.log(discription)
+        const a = 0;
+
+        for (let x of cartItem) {
+
+            a = 1 + a;
+            console.log(x, a);
 
 
 
+            const name = x.name;
+            const imageURL = x.image;
 
-storeFiles(makeFileObjects());
+            const getImage = async () => {
 
-    // const startMintingProcess = () => {
-    //     const name = cartItem.map((item) => item.name)
-    //     const image = cartItem.map((item) => item.image)
-    //     createMetaDataAndMint( name, description,image);
-
-    //     // console.log(cartItem.map((item) => item.name))
-    //     // console.log(image)
-    //   };
+                // const img = cartItem.map((item) => item.image)
 
 
-    //   const createMetaDataAndMint = async (_name, _des, _imgBuffer) => {
-    //     // setLoading(true);
-    //     // setStatus("Uploading to IPFS");
-    //     try {
-    //       const addedImage = await ipfsClient.add(_imgBuffer);
-    //       console.log(addedImage)
-    //       const metaDataObj = {
-    //         name: _name,
-    //         description: _des,
-    //         image: ipfsBaseUrl + addedImage.path,
-    //       };
-    //       const addedMetaData = await ipfsClient.add(JSON.stringify(metaDataObj));
-    //       console.log(ipfsBaseUrl + addedMetaData.path);
-         
-    //     console.log(_name)
-    //     } catch (err) {
-    //       console.log(err);
-    //     //   setLoading(false);
-    //     //   setStatus("Error");
-    //     }
-    //   };
-    
+                const imageurl = imageURL;
 
-    // const image = cartItem.map((item) => item.image)
+                const FatchedImage = await fetch(imageurl);
 
-    // async function storeFiles () {
-    //     const files = await getFilesFromPath(image)
-    //     const cid = await client.put(files)
-    //     console.log(cid)
-    //   }
-      
-    //   storeFiles()
-      
-      
+                if (!FatchedImage.ok) {
+                    throw new Error(`error fetching image: [${FatchedImage.statusCode}]: ${FatchedImage.status}`)
+                }
+
+                    console.log("fatched",FatchedImage) // return a promise
+                return FatchedImage.blob();
+
+
+            }
+
+            const image = await getImage();
+
+            // const imageurl = baseurl + image.slice(7);
+
+            console.log(image)
+             const nameImg = imageURL.slice(75)
+
+            const nft = {
+
+                image: new File([image], `${nameImg}`, {type: 'image/jpg'}),
+                name: name,
+                description:discription,
+            }
+
+            const client = new NFTStorage({ token: api })
+            const metadata = await client.store(nft);
+
+            console.log('NFtT data stored!')
+            // console.log(image)
+            console.log("Meta Data url ", metadata.url)
+
+
+            const url = baseurl +  metadata.url.slice(7);
+            console.log("url", url);
+
+            Mint(url );
+
+
+
+        }
+
+    }
+
+
+
+    const StartMintingProcess = async () => {
+      await   storeNFT();
+    }
+
 
 
 
@@ -149,7 +155,7 @@ storeFiles(makeFileObjects());
         const itemPrice = cartItem.reduce((a, c) => a + c.quantity * c.price, 0);
         setAmount(itemPrice)
 
-
+       
 
     }, [])
 
@@ -175,21 +181,24 @@ storeFiles(makeFileObjects());
 
 
 
+  
+    
 
-    const { data: signer, isError } = useSigner()
+
+    const PriceofEth = async () => {
+
+        
 
 
-    const Arun = async () => {
         try {
 
 
-            const contract = useContract({
-                addressOrName: WHITELIST_CONTRACT_ADDRESS,
-                contractInterface: abi,
-                signerOrProvider: signer,
-            })
-
+            const contract = new Contract( WHITELIST_CONTRACT_ADDRESS, abi,signer)
+        
+          
+            console.log(contract)
             const price = await contract.getLatestPrice();
+            console.log(price)
             const decimals = await contract.getDecimals();
 
 
@@ -207,16 +216,13 @@ storeFiles(makeFileObjects());
             console.log(error)
         }
     }
+    PriceofEth();
+  
 
-    Arun();
-
-
-//    const json = JSON.stringify(cartItem)
-
-//    console.log(json);
 
     return (
         <Layout title="shopping cart">
+            {/* <ToastContainer/> */}
             <h1 className='mb-4 text-xl mt-20'>Shipping cart</h1>
             {
                 cartItem.length === 0 ?
@@ -238,12 +244,13 @@ storeFiles(makeFileObjects());
                                     </thead>
 
                                     <tbody>
-                                        
+
                                         {cartItem.map((item) => (
                                             <tr key={item._id} className="border-b">
                                                 <td>
                                                     <Link href={`/product/${item._id}`}>
                                                         <a className='flex p-0 items-center border'>
+
 
                                                             <Image
                                                                 src={item.image}
@@ -304,7 +311,7 @@ storeFiles(makeFileObjects());
 
                                 </CardBody>
                                 <Button
-                                   
+                                    onClick={() => StartMintingProcess()}
                                     color="yellow" className='text-[#2f4468] normal-case font-Popins subpixel-antialiased'>
                                     Check Out
                                 </Button>

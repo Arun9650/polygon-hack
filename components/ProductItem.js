@@ -22,6 +22,7 @@ export default function ProductItem(props) {
         <Card className=" m-3 border rounded-2xl  ">
             <Link href={`/product/${product._id}`}>
                 <a>
+                   
                     <Image
                         src={product.image}
                         alt={product.name}

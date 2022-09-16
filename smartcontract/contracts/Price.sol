@@ -1,46 +1,94 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+// SPDX-License-Identifier: MIT
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
+pragma solidity ^0.8.0;
 
-
-
- import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-contract PriceConsumerV3 is Ownable  {
-  AggregatorV3Interface public priceFeed;
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-  constructor()  {
-    priceFeed = AggregatorV3Interface(0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e);
-  }
+contract SmartContract is ERC721, Ownable {
+    using Counters for Counters.Counter;
+    Counters.Counter tokenIds;
+    using Strings for uint256;
 
-    function getLatestPrice() public view returns (int) {
-      (,int price,,,) = priceFeed.latestRoundData();
+    mapping(uint256 => string) public tokenURIs;
 
-      return price;
+    AggregatorV3Interface public priceFeed;
+
+    struct RenderToken {
+        uint256 id;
+        string uri;
     }
 
-  // Start here
-  function getDecimals() public view returns(uint8) {
-    uint8 decimals = priceFeed.decimals();
+    constructor() ERC721("Smart Drone", "SD") {
+        priceFeed = AggregatorV3Interface(
+            // 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
+            0x8A753747A1Fa494EC906cE90E9f37563A8AF630e
+        );
+    }
 
-    return decimals;
-  }
+    function getLatestPrice() public view returns (int) {
+        (, int price, , , ) = priceFeed.latestRoundData();
 
-     
-      function withdraw() public onlyOwner  {
-          address _owner = owner();
-          uint256 amount = address(this).balance;
-          (bool sent, ) =  _owner.call{value: amount}("");
-          require(sent, "Failed to send Ether");
-      }
+        return price;
+    }
 
-       // Function to receive Ether. msg.data must be empty
-      receive() external payable {}
+    function getDecimals() public view returns (uint8) {
+        uint8 decimals = priceFeed.decimals();
 
-      // Fallback function is called when msg.data is not empty
-      fallback() external payable {}
+        return decimals;
+    }
+
+    function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal {
+        tokenURIs[tokenId] = _tokenURI;
+    }
+
+    function tokenURI(uint256 tokenId) public view virtual  override returns (string memory){
+        require(_exists(tokenId));
+        string memory _tokenURI = tokenURIs[tokenId];
+        return _tokenURI;
+    }
+
+    function mint(  string memory uri)
+        public
+        payable
+        returns (uint256)
+    {
+        uint256 newId = tokenIds.current();
+        _mint(msg.sender, newId);
+        _setTokenURI(newId, uri);
+        tokenIds.increment();
+        return newId;
+    }
+
+    function getAllTokens() public view returns (RenderToken[] memory) {
+        uint256 lastestId = tokenIds.current();
+        uint256 counter = 0;
+        RenderToken[] memory res = new RenderToken[](lastestId);
+        for (uint256 i = 0; i < lastestId; i++) {
+            if (_exists(counter)) {
+                string memory uri = tokenURI(counter);
+                res[counter] = RenderToken(counter, uri);
+            }
+            counter++;
+        }
+        return res;
+    }
+
+        
+        function withdraw() public onlyOwner  {
+            address _owner = owner();
+            uint256 amount = address(this).balance;
+            (bool sent, ) =  _owner.call{value: amount}("");
+            require(sent, "Failed to send Ether");
+        }
+
+         // Function to receive Ether. msg.data must be empty
+        receive() external payable {}
+
+        // Fallback function is called when msg.data is not empty
+        fallback() external payable {}
 
 
 
