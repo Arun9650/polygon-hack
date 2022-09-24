@@ -48,7 +48,7 @@ contract SmartContract is ERC721, Ownable {
         require(_exists(tokenId));
         string memory _tokenURI = tokenURIs[tokenId];
         return _tokenURI;
-    }
+    }   
 
     function mint(  string memory uri)
         public

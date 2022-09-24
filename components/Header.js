@@ -3,9 +3,8 @@ import { AppWrapper } from '../utils/context'
 import Link from 'next/link'
 import { Menu, MenuList, MenuItem, MenuHandler, Button,  } from '@material-tailwind/react'
 import { useRouter } from 'next/router'
-import { WHITELIST_CONTRACT_ADDRESS, abi} from '../constans/index'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import {  useContract,useSigner } from 'wagmi'
+
 
 export default function Header() {
 
@@ -31,11 +30,11 @@ export default function Header() {
 
   return (
     <div className='flex border-6 border fixed   z-10 w-full bg-white h-16  px-4 shadow-md items-center justify-between'>
-      <div>
-        <Link href="/">
+      <Link href="/">
+        <a>
           Company
-        </Link>
-      </div>
+        </a>
+      </Link>
       <div className='flex '>
       <ConnectButton />
         <Menu>

@@ -7,9 +7,7 @@ import { Card, CardBody, Button } from '@material-tailwind/react'
 import { AppWrapper } from '../utils/context'
 import { HiXCircle } from 'react-icons/hi'
 import { NFTStorage } from 'nft.storage'
-import { useAccount } from 'wagmi'
 import {Contract} from 'ethers'
-
 import { toast } from 'react-toastify'
 import {ethers} from 'ethers'
 import dynamic from 'next/dynamic'
@@ -106,11 +104,7 @@ function CartScreen() {
 
 
             }
-
             const image = await getImage();
-
-            // const imageurl = baseurl + image.slice(7);
-
             console.log(image)
              const nameImg = imageURL.slice(75)
 

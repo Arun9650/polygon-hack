@@ -1,7 +1,5 @@
 import React from 'react'
-import Layout from './Layout'
 import { Button, Card, CardFooter, CardHeader } from '@material-tailwind/react';
-import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
 export default function ProductItem(props) {
@@ -15,8 +13,6 @@ export default function ProductItem(props) {
     const { product } = props;
     const { addtocartHandler } = props;
 
-    // console.log("item",props);
-    // console.log("item",product);
     return (
 
         <Card className=" m-3 border rounded-2xl  ">
