@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <div className='flex border-6 border fixed   z-10 w-full bg-white h-16  px-4 shadow-md items-center justify-between'>
       <Link href="/">
-        <a>
+        <a className=' h-full flex items-center'>
           Company
         </a>
       </Link>
