@@ -46,23 +46,7 @@ function Nftview() {
     }
   }
 
-  const getETHFromContract = async () => {
-
-
-    try {
-
-
-      const nftContract = new Contract(WHITELIST_CONTRACT_ADDRESS, abi, signer);
-
-      const money = await nftContract.withdraw();
-      console.log(money);
-
-
-
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
+ 
 
 
 
@@ -76,9 +60,7 @@ function Nftview() {
         <button className='border p-4 m-4 bg-blue-gray-50 rounded  ' onClick={() => getAllTokens()}>
           view tokens
         </button>
-        <button className='border p-4 m-4 bg-blue-gray-50 rounded  ' onClick={() => getETHFromContract()}>
-          withdraw
-        </button>
+      
 
 
         <div className='flex items-center justify-center  flex-wrap '>
