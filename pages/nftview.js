@@ -29,17 +29,16 @@ function Nftview() {
 
       const token = await nftContract.getAllTokens();
 
-      console.log("token", token)
+      
       token.forEach((nft) => {
-        console.log("nft2", nft.uri)
+        
         fetch(nft.uri).then((response) => response.json())
           .then((metaData) => {
             setLink((state) => [...state, { id: nft.id, metaData: metaData }])
           })
       }
       )
-      console.log(links)
-
+      
 
     } catch (error) {
       console.log(error)
@@ -54,9 +53,7 @@ function Nftview() {
   return (
     <Layout>
       <div className='mt-20'>
-        <button>
-
-        </button>
+       
         <button className='border p-4 m-4 bg-blue-gray-50 rounded  ' onClick={() => getAllTokens()}>
           view tokens
         </button>
@@ -69,8 +66,11 @@ function Nftview() {
               (links.map((nft, index) => {
                 const image = nft.metaData.image.slice(7);
                 const url = baseurl + image;
-                console.log(nft)
+               
                 return (
+
+                  
+
                   <div key={index} className="">
                     <Card className=" m-3 border rounded-2xl  ">
                       <a>
@@ -89,10 +89,18 @@ function Nftview() {
                       </CardFooter>
                     </Card>
                   </div>
+
+
                 )
               }))
               :
-              "loading"
+             (<div
+             className="text-3xl italic bold "
+             >
+
+
+             Nothing
+             </div>)
           }
         </div>
       </div>
