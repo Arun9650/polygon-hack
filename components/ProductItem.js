@@ -41,7 +41,8 @@ export default function ProductItem(props) {
 
                 </div>
                 <div className=''>
-                    <Button onClick={() => addtocartHandler(product)} size='sm' className='p-3 active:scale-95'>Add to  Cart</Button>
+                    <Button onClick={() => addtocartHandler(product)} size='sm' className='p-3 active:scale-95'>Add to Cart</Button>
+                    <Button onClick={() => addtocartHandler(product)} size='sm' className='p-3 active:scale-95'>Rent</Button>
                 </div>
             </CardFooter>
         </Card>
