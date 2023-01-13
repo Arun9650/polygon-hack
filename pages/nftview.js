@@ -51,7 +51,7 @@ function Nftview() {
 
 
   return (
-    <Layout>
+    <Layout title={'view nft'}>
       <div className='mt-20'>
        
         <button className='border p-4 m-4 bg-blue-gray-50 rounded  ' onClick={() => getAllTokens()}>
