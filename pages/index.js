@@ -9,7 +9,7 @@ import db from '../utils/db';
 import ProductItem from '../components/ProductItem';
 export default function Home({ products }) {
 
-
+  
   const { state, dispatch } = useContext(AppWrapper)
   const { cart } = state;
   const addtocartHandler = async (item) => {
@@ -17,9 +17,8 @@ export default function Home({ products }) {
     const existItem = cart.cartItem.find((x) => x._id === item._id)
     const quantity = existItem ? existItem.quantity + 1 : 1;
     
-    const { data } = await axios.get(`/api/${item._id}`);
-    
-    if (data.countInStock < quantity) {
+    const result  = await axios.get(`/api/${item._id}`);
+    if (result.data.countInStock < quantity) {
       return toast.error('Sorry. Product is out of stock');
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } })
@@ -32,7 +31,7 @@ export default function Home({ products }) {
   return (
     <Layout title={"home page"} >
       <div className='flex flex-wrap   mt-16  items-center justify-center rounded-xl px-4'>
-        {/* {console.log(data)} */}
+     
         {products.map((item) => (
           <ProductItem key={item._id}
             addtocartHandler={addtocartHandler}
@@ -49,11 +48,12 @@ export default function Home({ products }) {
 export async function getServerSideProps() {
   await db.connect();
   const products = await Product.find().lean();
+  // console.log(products)
 
   return {
     props: {
-      products: products.map(db.convertDocToObj)
-
+      // products: products?.map(db.convertDocToObj)
+      products: JSON.parse(JSON.stringify(products))
     }
   }
 

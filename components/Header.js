@@ -36,9 +36,7 @@ export default function Header() {
         </a>
       </Link>
     
-    <Link href="/">
-    Consult Now 
-    </Link>
+   
       <div className='flex '>
       <ConnectButton />
         <Menu>

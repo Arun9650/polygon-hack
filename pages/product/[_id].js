@@ -49,7 +49,7 @@ function ProductScreen(props) {
             </Link>
          </div>
        
-         <Image src={product.image}
+         <Image src={product.img}
          alt={product.title}
          width={640} 
          height={540}
@@ -94,7 +94,8 @@ export async function getServerSideProps(context) {
 
     return {
         props:{
-            product: product ? db.convertDocToObj(product) :null,
+            // product: product ? db.convertDocToObj(product) :null,
+            product: JSON.parse(JSON.stringify(product))
         }
     }
 }

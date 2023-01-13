@@ -20,7 +20,7 @@ export default function ProductItem(props) {
                 <a>
                    
                     <Image
-                        src={product.image}
+                        src={product.img}
                         alt={product.name}
                         width={300}
                         height={300}
@@ -35,14 +35,14 @@ export default function ProductItem(props) {
                 <div className=''>
 
 
-                    <div className='font-Roboto text-[#0e0a23] truncate w-28'>{product.name}</div>
+                    <div className='font-Roboto text-[#0e0a23] truncate w-28'>{product.title}</div>
                     <div className='font-light '> {dollarUS.format(product.price)}</div>
 
 
                 </div>
                 <div className=''>
                     <Button onClick={() => addtocartHandler(product)} size='sm' className='p-3 active:scale-95'>Add to Cart</Button>
-                    <Button onClick={() => addtocartHandler(product)} size='sm' className='p-3 active:scale-95'>Rent</Button>
+                    {/* <Button onClick={() => addtocartHandler(product)} size='sm' className='p-3 active:scale-95'>Rent</Button> */}
                 </div>
             </CardFooter>
         </Card>
